@@ -9,13 +9,6 @@ class Product(SQLModel, table=True):
     description: str
     price: float
 
-    def __init__(self, id, name, category, description, price):
-        self.id = id
-        self.name = name
-        self.category = category
-        self.description = description
-        self.price = price
-
 #could also have 
 # The "Response" version - used for data going OUT
 # class ProductResponse(BaseModel):
@@ -27,7 +20,6 @@ class Product(SQLModel, table=True):
 
 # API Input contract
 class ProductRequest(BaseModel):
-    id: Optional[int] = None
     name: str = Field(min_length=1)
     category: str = Field(min_length=1)
     description: str =Field(min_length=1, max_length=100)

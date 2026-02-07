@@ -77,9 +77,10 @@ def pydantic_to_dict(pydantic_obj):
     ##new_product = Product(**product_request.model_dump())
     #PRODUCTS.append(new_product)
 
-@app.post('/products/', status_code=status.HTTP_201_CREATED)
+@app.post("/products/", status_code=status.HTTP_201_CREATED)
 def create_product(product_request: ProductRequest, session: SessionDep) -> Product:
-    product = Product(**product_request.model_dump())  
+    data = pydantic_to_dict(product_request)
+    product = Product(**data)
     session.add(product)
     session.commit()
     session.refresh(product)
@@ -108,7 +109,7 @@ def read_all_products(
 #     raise HTTPException(status_code=404, detail='Product not found')
 
 @app.get('/products/{product_id}', status_code=status.HTTP_200_OK)
-def read_product(product_id: int, session: SessionDep) -> Product:
+def read_product(session: SessionDep, product_id: int = Path(gt=0)) -> Product:
     product = session.get(Product, product_id)
     if not product: 
         raise HTTPException(status_code=404, detail="Hero not found")
@@ -126,7 +127,7 @@ def read_product(product_id: int, session: SessionDep) -> Product:
 #     raise HTTPException(status_code=404, detail='Product not found')
 
 @app.put('/products/{product_id}', status_code=status.HTTP_200_OK)
-def update_product(product_id: int, product_data: Product, session: SessionDep):
+def update_product(product_id: int, product_data: ProductRequest, session: SessionDep):
     # 1. Fetch existing product
     db_product = session.get(Product, product_id)
     if not db_product:
@@ -134,7 +135,7 @@ def update_product(product_id: int, product_data: Product, session: SessionDep):
     
     # 2. Replace all data
     ### if was going to do patch: update_data = product_data.model_dump(exclude_unset=True)
-    update_data = product_data.model_dump()
+    update_data = pydantic_to_dict(product_data)
 
     # Overwrite every field
     for key, value in update_data.items():
