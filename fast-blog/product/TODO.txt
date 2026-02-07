@@ -1,0 +1,16 @@
+(testing)   1) Need to setup sqlite backend that will eventually transition to mysql
+
+            2) Setup basic sveltekit front end
+
+            --After basics set up, transition it to the blogging writing content
+
+            3) Create basic login >>> expand later to two factor, oauth2 and do https
+            4) Create tiered access for authorization
+            5) Expand models to create users as well
+            6) Authorization and Authentication
+
+            7) Dockerization? for deployment using Hostinger
+
+            8) Media hosted in separate container?
+
+            9) Stripe for payments, free tier and pay tier
