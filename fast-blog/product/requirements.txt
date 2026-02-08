@@ -1,4 +1,6 @@
-fastapi
+fastapi[standard]
 uvicorn[standard]
 pydantic
 sqlmodel
+pyjwt[crypto]
+pwdlib[argon2]
